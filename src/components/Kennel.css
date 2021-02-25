@@ -23,7 +23,9 @@ h6 {
   font-family: "Patua One", serif;
   letter-spacing: 2px;
 }
-
+*{
+  margin: 1em;
+}
 p {
   margin-bottom: 1.5em;
   color: #d6fcff;
