@@ -1,10 +1,10 @@
 import React from "react"
 import "./Customer.css"
 
-export const CustomerCard = () => (
+export const CustomerCard = ({customer}) => (
     <section className="customer">
-        <h3 className="customer__name">Name: Sally Sanders</h3>
-        <div className="customer__address">Address: 4141 FallBridge Way</div>
+        <h3 className="customer__name">Name: {customer.name}</h3>
+        <div className="customer__address">Address: {customer.address}</div>
     </section>
 
     
