@@ -25,10 +25,24 @@ export const ApplicationViews = () => {
 
       {/* Render the animal list when http://localhost:3000/animals */}
       <AnimalProvider>
+      <LocationProvider>
+        <CustomerProvider>
         <Route exact path="/animals">
           <AnimalList />
         </Route>
+        </CustomerProvider>
+    </LocationProvider>
       </AnimalProvider>
+
+      {/* <AnimalProvider>
+    <LocationProvider>
+        <CustomerProvider>
+            <Route exact path="/animals/create">
+                <AnimalForm />
+            </Route>
+        </CustomerProvider>
+    </LocationProvider>
+</AnimalProvider> */}
 
       <CustomerProvider>
         <Route exact path="/customers">
