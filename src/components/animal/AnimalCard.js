@@ -1,3 +1,7 @@
+// Author:  Mandy Campbell
+// This card prints the exact info requested in the DOM
+// This is an HTML representation of the printed info in the DOM
+
 import React from "react"
 import "./Animal.css"
 

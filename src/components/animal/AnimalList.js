@@ -1,3 +1,6 @@
+// Author:  Mandy Campbell
+// 
+
 import React, { useContext, useEffect } from "react";
 import { AnimalContext } from "./AnimalProvider";
 import { LocationContext } from "../location/LocationProvider";
