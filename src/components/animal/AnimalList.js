@@ -1,8 +1,12 @@
+// Author:  Mandy Campbell
+//
+
 import React, { useContext, useEffect } from "react";
 import { AnimalContext } from "./AnimalProvider";
 import { LocationContext } from "../location/LocationProvider";
 import { CustomerContext } from "../customer/CustomerDataProvider";
 import { AnimalCard } from "./AnimalCard";
+import { useHistory } from "react-router-dom";
 import "./Animal.css";
 
 export const AnimalList = () => {
@@ -13,10 +17,20 @@ export const AnimalList = () => {
   useEffect(() => {
     console.log("AnimalList: Initial render before data");
     getLocations().then(getCustomers).then(getAnimals);
-  }, []);
+  }, [])
+
+  const history = useHistory()
+
 
   return (
-    <div className="animals">
+    <>
+
+<h2>Animals</h2>
+		<button onClick={() => {history.push("/animals/create")}}>
+            Add Animal
+        </button>
+        
+   <div className="animals">
       {animals.map((animal) => {
         const owner = customers.find((c) => c.id === animal.customerId);
         const clinic = locations.find((l) => l.id === animal.locationId);
@@ -31,5 +45,6 @@ export const AnimalList = () => {
         );
       })}
     </div>
+    </>
   );
 };
