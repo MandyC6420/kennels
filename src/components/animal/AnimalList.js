@@ -17,34 +17,36 @@ export const AnimalList = () => {
   useEffect(() => {
     console.log("AnimalList: Initial render before data");
     getLocations().then(getCustomers).then(getAnimals);
-  }, [])
+  }, []);
 
-  const history = useHistory()
-
+  const history = useHistory();
 
   return (
     <>
+      <h2>Animals</h2>
+      <button
+        onClick={() => {
+          history.push("/animals/create");
+        }}
+      >
+        Add Animal
+      </button>
 
-<h2>Animals</h2>
-		<button onClick={() => {history.push("/animals/create")}}>
-            Add Animal
-        </button>
-        
-   <div className="animals">
-      {animals.map((animal) => {
-        const owner = customers.find((c) => c.id === animal.customerId);
-        const clinic = locations.find((l) => l.id === animal.locationId);
+      <div className="animals">
+        {animals.map((animal) => {
+          const owner = customers.find((c) => c.id === animal.customerId);
+          const clinic = locations.find((l) => l.id === animal.locationId);
 
-        return (
-          <AnimalCard
-            key={animal.id}
-            location={clinic}
-            customer={owner}
-            animal={animal}
-          />
-        );
-      })}
-    </div>
+          return (
+            <AnimalCard
+              key={animal.id}
+              location={clinic}
+              customer={owner}
+              animal={animal}
+            />
+          );
+        })}
+      </div>
     </>
   );
 };
