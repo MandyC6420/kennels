@@ -51,16 +51,19 @@ export const EmployeeForm = () => {
 
     const handleClickSaveEmployee = (event) => {
       event.preventDefault() //Prevents the browser from submitting the form
+      const newEmployee = { ...employee }
 
-      const locationId = parseInt(employee.locationId)
+      const intlocationId = parseInt(employee.locationId)
     //   const customerId = parseInt(animal.customerId)
 
-      if (locationId === 0) {
+    newEmployee.locationId = intlocationId
+
+      if (intlocationId === 0) {
         window.alert("Please select a location")
       } else {
         //invoke addAnimal passing animal as an argument.
         //once complete, change the url and display the animal list
-        addEmployee(employee)
+        addEmployee(newEmployee)
         .then(() => history.push("/employees"))
       }
     }
