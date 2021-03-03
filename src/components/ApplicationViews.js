@@ -5,17 +5,19 @@ import { Home } from "./Home";
 import { CustomerCard } from "./customer/Customer.js";
 // import { EmployeeCard } from "./employee/Employee.js";
 import { LocationCard } from "./location/Location.js";
-import { AnimalProvider } from "./animal/AnimalProvider.js"
-import { AnimalList } from "./animal/AnimalList.js"
-import { EmployeeProvider } from "./employee/EmployeeProvider.js"
-import { EmployeeList } from "./employee/EmployeeList"
-import { EmployeeForm } from "./employee/EmployeeForm"
-import { CustomerProvider } from "./customer/CustomerDataProvider.js"
-import { CustomerList } from "./customer/CustomerList"
-import { LocationProvider } from "./location/LocationProvider"
-import { LocationList } from "./location/LocationList"
-import { AnimalForm } from "./animal/AnimalForm"
-
+import { AnimalProvider } from "./animal/AnimalProvider.js";
+import { AnimalList } from "./animal/AnimalList.js";
+import { EmployeeProvider } from "./employee/EmployeeProvider.js";
+import { EmployeeList } from "./employee/EmployeeList";
+import { EmployeeForm } from "./employee/EmployeeForm";
+import { CustomerProvider } from "./customer/CustomerDataProvider.js";
+import { CustomerList } from "./customer/CustomerList";
+import { LocationProvider } from "./location/LocationProvider";
+import { LocationList } from "./location/LocationList";
+import { AnimalForm } from "./animal/AnimalForm";
+import { LocationForm } from "./location/LocationForm";
+import { AnimalDetail } from "./animal/AnimalDetail";
+import { EmployeeDetail } from "./employee/EmployeeDetail";
 
 export const ApplicationViews = () => {
   return (
@@ -37,17 +39,22 @@ export const ApplicationViews = () => {
       </AnimalProvider> */}
 
       <AnimalProvider>
-    <LocationProvider>
-        <CustomerProvider>
-        <Route exact path="/animals">
-          <AnimalList />
-          </Route>
-            <Route exact path="/animals/create">
-                <AnimalForm />
+        <LocationProvider>
+          <CustomerProvider>
+            <Route exact path="/animals">
+              <AnimalList />
             </Route>
-        </CustomerProvider>
-    </LocationProvider>
-</AnimalProvider>
+            <Route exact path="/animals/create">
+              <AnimalForm />
+            </Route>
+            <AnimalProvider>
+              <Route exact path="/animals/detail/:animalId(\d+)">
+                <AnimalDetail />
+              </Route>
+            </AnimalProvider>
+          </CustomerProvider>
+        </LocationProvider>
+      </AnimalProvider>
 
       <CustomerProvider>
         <Route exact path="/customers">
@@ -56,21 +63,27 @@ export const ApplicationViews = () => {
       </CustomerProvider>
 
       <EmployeeProvider>
-      <LocationProvider>
-        <Route exact path="/employees">
-          <EmployeeList />
-        </Route>
-        <Route exact path="/employees/create">
-                <EmployeeForm />
-            </Route>
-            </LocationProvider>
+        <LocationProvider>
+          <Route exact path="/employees">
+            <EmployeeList />
+          </Route>
+          <Route exact path="/employees/create">
+            <EmployeeForm />
+          </Route>
+          <Route exact path="/employees/detail/:employeeId(\d+)">
+            <EmployeeDetail />
+          </Route>
+        </LocationProvider>
       </EmployeeProvider>
 
       <LocationProvider>
-    <Route exact path="/locations">
-        <LocationList />
-    </Route>
-</LocationProvider>
+        <Route exact path="/locations">
+          <LocationList />
+        </Route>
+        <Route exact path="/locations/create">
+          <LocationForm />
+        </Route>
+      </LocationProvider>
     </>
   );
 };
