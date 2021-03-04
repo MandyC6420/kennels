@@ -8,7 +8,7 @@ export const LocationProvider = (props) => {
     const [locations, setLocations] = useState([])
 
     const getLocations = () => {
-        return fetch("http://localhost:8088/locations")
+        return fetch("http://localhost:8088/locations/?_embed=animals&_embed=employees")
         .then(res => res.json())
         .then(setLocations)
     }
@@ -21,7 +21,7 @@ export const LocationProvider = (props) => {
             },
             body: JSON.stringify(locationObj)
         })
-        .then(getLocations)
+        .then(setLocations)
     }
 
     /*
@@ -32,9 +32,16 @@ export const LocationProvider = (props) => {
     */
     return (
         <LocationContext.Provider value={{
-            locations, getLocations, addLocation
+            locations, getLocations, addLocation, getLocationById,
         }}>
             {props.children}
         </LocationContext.Provider>
     )
 }
+
+const getLocationById = (id) => {
+    return fetch(
+      `http://localhost:8088/locations/${id}?_embed=animals&_embed=employees`
+    )
+      .then((res) => res.json())
+  };
