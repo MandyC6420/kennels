@@ -4,7 +4,6 @@ import { Home } from "./Home";
 // import { AnimalCard } from "./animal/AnimalCard.js";
 import { CustomerCard } from "./customer/Customer.js";
 // import { EmployeeCard } from "./employee/Employee.js";
-import { LocationCard } from "./location/Location.js";
 import { AnimalProvider } from "./animal/AnimalProvider.js";
 import { AnimalList } from "./animal/AnimalList.js";
 import { EmployeeProvider } from "./employee/EmployeeProvider.js";
@@ -18,6 +17,8 @@ import { AnimalForm } from "./animal/AnimalForm";
 import { LocationForm } from "./location/LocationForm";
 import { AnimalDetail } from "./animal/AnimalDetail";
 import { EmployeeDetail } from "./employee/EmployeeDetail";
+import { LocationDetail } from "./location/LocationDetail"
+import { LocationCard } from "./location/LocationCard"
 
 export const ApplicationViews = () => {
   return (
@@ -82,6 +83,9 @@ export const ApplicationViews = () => {
         </Route>
         <Route exact path="/locations/create">
           <LocationForm />
+        </Route>
+        <Route exact path="/locations/detail/:locationId(\d+)">
+          <LocationDetail />
         </Route>
       </LocationProvider>
     </>
