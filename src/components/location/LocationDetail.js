@@ -32,9 +32,11 @@ export const LocationDetail = () => {
         <h3 className="location__name">{location.name}</h3>
         <div className="location__address">{location.address}</div>
         <div className="location__employees">
+            {location.employees?.map(employee =>
+                 <p>Employee:  {employee.name}</p>)}
           {
-            locations.map(location => {
-                return <>Hello</>
+            location.animals?.map(animal => {
+                return <p>Animal name: {animal.name}</p>
             })
         }
         </div>
