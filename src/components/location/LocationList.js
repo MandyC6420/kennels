@@ -7,7 +7,7 @@ import { Location } from "./Location"
 
 export const LocationList = ({ history }) => {
   // This state changes when `getLocations()` is invoked below
-  const { getLocations, locations } = useContext(LocationContext);
+  const { locations, getLocations } = useContext(LocationContext);
   history = useHistory();
   //useEffect - reach out to the world for something
   useEffect(() => {
@@ -18,7 +18,9 @@ export const LocationList = ({ history }) => {
   
 
     return (
+      
       <>
+      {console.log("this is locations", locations)}
           <h2>Locations</h2>
 
           <button onClick={() => history.push("/locations/create")}>
@@ -27,6 +29,7 @@ export const LocationList = ({ history }) => {
           <div className="location">
               {
                   locations.map(location => {
+                    
                       return <Location key={location.id} location={location} />
                   })
               }

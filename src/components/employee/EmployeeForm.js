@@ -6,10 +6,10 @@ import { EmployeeContext } from "../employee/EmployeeProvider"
 import { EmployeeProvider } from "../employee/EmployeeProvider"
 import { getLocations } from "../location/LocationProvider"
 import "./Employee.css"
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 export const EmployeeForm = () => {
-    const { addEmployee, getEmployees } = useContext(EmployeeContext)
+    const { addEmployee, getEmployees, updateEmployee, getEmployeeById } = useContext(EmployeeContext)
     const { locations, getLocations } = useContext(LocationContext)
     // const { customers, getCustomers } = useContext(CustomerContext)
 
@@ -24,18 +24,11 @@ export const EmployeeForm = () => {
      locationId: 0,
     //   customerId: 0
     });
-
+    const [isLoading, setIsLoading] = useState(true);
+    const {employeeId} = useParams();
     const history = useHistory();
 
-    /*
-    Reach out to the world and get customers state
-    and locations state on initialization.
-    */
-    useEffect(() => {
-      getEmployees().then(getLocations)
-    }, [])
-
-    //when a field changes, update state. The return will re-render and display based on the values in state
+     //when a field changes, update state. The return will re-render and display based on the values in state
     //Controlled component
     const handleControlledInputChange = (event) => {
       /* When changing a state object or array,
@@ -49,24 +42,44 @@ export const EmployeeForm = () => {
       setEmployee(newEmployee)
     }
 
-    const handleClickSaveEmployee = (event) => {
-      event.preventDefault() //Prevents the browser from submitting the form
-      const newEmployee = { ...employee }
-
-      const intlocationId = parseInt(employee.locationId)
-    //   const customerId = parseInt(animal.customerId)
-
-    newEmployee.locationId = intlocationId
-
-      if (intlocationId === 0) {
-        window.alert("Please select a location")
+    const handleClickSaveEmployee = () => {
+      if (parseInt(employee.locationId) === 0) {
+          window.alert("Please select a location")
       } else {
-        //invoke addAnimal passing animal as an argument.
-        //once complete, change the url and display the animal list
-        addEmployee(newEmployee)
-        .then(() => history.push("/employees"))
+        //disable the button - no extra clicks
+        setIsLoading(true);
+        if (employeeId){
+          //PUT - update
+          updateEmployee({
+              id: employee.id,
+              name: employee.name,
+              locationId: parseInt(employee.locationId),
+              customerId: parseInt(employee.customerId)
+          })
+          .then(() => history.push(`/employees/detail/${employee.id}`))
+        }else {
+          //POST - add
+          addEmployee({
+              name: employee.name,
+              locationId: parseInt(employee.locationId),
+              customerId: parseInt(employee.customerId)
+          })
+          .then(() => history.push("/employees"))
+        }
       }
     }
+    useEffect(() => {
+      getEmployees().then(getLocations).then(() => {
+        if (employeeId){
+          getEmployeeById(employeeId).then(employee => {
+            setEmployee(employee)
+            setIsLoading(false)
+          })
+        } else {
+          setIsLoading(false)
+        }
+      })
+    }, [])
 
     return (
       <form className="employeeForm">
@@ -103,10 +116,13 @@ export const EmployeeForm = () => {
                   </select>
               </div>
           </fieldset> */}
-          <button className="btn btn-primary"
-            onClick={handleClickSaveEmployee}>
-            Save Employee
-          </button>
+        <button className="btn btn-primary"
+          disabled={isLoading}
+          onClick={event => {
+            event.preventDefault() // Prevent browser from submitting the form and refreshing the page
+            handleClickSaveEmployee()
+          }}>
+        {employeeId ? <>Save Employee</> : <>Add Employee</>}</button>
       </form>
     )
 }

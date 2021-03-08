@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react"
 import { LocationContext } from "../location/LocationProvider"
 import "./Location.css"
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 export const LocationForm = () => {
-    const { addLocation } = useContext(LocationContext)
+    const { addLocation, updateLocation, getLocations, getLocationById } = useContext(LocationContext)
     /*
     With React, we do not target the DOM with `document.querySelector()`. Instead, our return (render) reacts to state or props.
     Define the initial state of the form inputs with useState()
@@ -14,6 +14,9 @@ export const LocationForm = () => {
       name: "",
       address: ""
     });
+    const [isLoading, setIsLoading] = useState(true);
+
+    const {locationId} = useParams();
 
     const history = useHistory();
 
@@ -31,15 +34,48 @@ export const LocationForm = () => {
       setLocation(newLocation)
     }
 
-    const handleClickSaveLocation = (event) => {
-      event.preventDefault() //Prevents the browser from submitting the form
-      const newLocation = { ...location }
-      
-        //invoke addAnimal passing animal as an argument.
-        //once complete, change the url and display the animal list
-      addLocation(newLocation)
-      .then(() => history.push("/locations"))
+    const handleClickSaveLocation = () => {
+      if (parseInt(location.locationId) === 0) {
+          window.alert("Please select a location")
+      } else {
+        //disable the button - no extra clicks
+        setIsLoading(true);
+        if (locationId){
+          //PUT - update
+          updateLocation({
+              id: location.id,
+              name: location.name,
+              address: location.address
+              // locationId: parseInt(location.locationId),
+              // customerId: parseInt(location.customerId)
+          })
+          .then(() => history.push(`/locations/detail/${location.id}`))
+        }else {
+          //POST - add
+          addLocation({
+            name: location.name,
+            address: location.address
+              // locationId: parseInt(location.locationId),
+              // customerId: parseInt(location.customerId)
+          })
+          .then(() => history.push("/locations"))
+        }
+      }
     }
+
+    useEffect(() => {
+      getLocations().then(getLocations).then(() => {
+        if (locationId){
+          getLocationById(locationId)
+          .then(location => {
+              setLocation(location)
+              setIsLoading(false)
+          })
+        } else {
+          setIsLoading(false)
+        }
+      })
+    }, [])
     
     return (
       <form className="locationForm">
@@ -56,10 +92,13 @@ export const LocationForm = () => {
               <input type="text" id="address" onChange={handleControlledInputChange} required autoFocus className="form-control" placeholder="Location address" value={location.address}/>
           </div>
       </fieldset>
-          <button className="btn btn-primary"
-            onClick={handleClickSaveLocation}>
-            Save Location
-          </button>
+      <button className="btn btn-primary"
+          disabled={isLoading}
+          onClick={event => {
+            event.preventDefault() // Prevent browser from submitting the form and refreshing the page
+            handleClickSaveLocation()
+          }}>
+        {locationId ? <>Save Location</> : <>Add Location</>}</button>
       </form>
     )
 }
