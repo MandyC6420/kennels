@@ -19,6 +19,7 @@ import { AnimalDetail } from "./animal/AnimalDetail";
 import { EmployeeDetail } from "./employee/EmployeeDetail";
 import { LocationDetail } from "./location/LocationDetail";
 import { LocationCard } from "./location/LocationCard";
+import { AnimalSearch } from "./animal/AnimalSearch";
 
 export const ApplicationViews = () => {
   return (
@@ -42,18 +43,23 @@ export const ApplicationViews = () => {
       <AnimalProvider>
         <LocationProvider>
           <CustomerProvider>
-            <Route exact path="/animals">
+             {/* <Route exact path="/animals">
               <AnimalList />
-            </Route>
+            </Route> */}
             <Route exact path="/animals/create">
               <AnimalForm />
             </Route>
-            <AnimalProvider>
+            
               <Route exact path="/animals/detail/:animalId(\d+)">
                 <AnimalDetail />
               </Route>
               <Route path="/animals/edit/:animalId(\d+)">
                 <AnimalForm />
+              </Route>
+              <AnimalProvider>
+              <Route exact path="/animals">
+                <AnimalSearch />
+                <AnimalList />
               </Route>
             </AnimalProvider>
           </CustomerProvider>
